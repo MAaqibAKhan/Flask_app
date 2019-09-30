@@ -1,9 +1,8 @@
 from flask import render_template, redirect, url_for, request
 from application import app, db, bcrypt
-from application.models import Posts, Users
-from application.forms import PostForm, RegistrationForm, LoginForm, UpdateAccountForm
+from application.models import Admin, Country
+from application.forms import CountryForm, LoginForm, CountrySubmitForm, CapitalSubmitForm
 from flask_login import login_user, current_user, logout_user, login_required
-
 
 @app.route('/')
 @app.route('/home')
@@ -11,24 +10,31 @@ def home():
 	postData = Posts.query.all()
 	return render_template('home.html', title='Home', posts=postData)
 
-@app.route('/about')
-def about():
-	return render_template('about.html', title='About')
+@app.route('/countryquiz', methods=['GET', 'POST'])
+def CountryQuiz():
+	form=CountrySubmitForm
+	if validate_on_submit():
+		QuizData
+	return render_template('countryquiz.html', title='Country Quiz')
+
+@app.route('/capitalquiz')
+def CapitalQuiz():
+	return render_template('capitalquiz.html', title='Capital Quiz')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	if current_user.is_authenticated:
-		return redirect(url_for('home'))
+		return redirect(url_for('update'))
 	form = LoginForm()
 	if form.validate_on_submit():
-		user = Users.query.filter_by(email=form.email.data).first()
+		user = Admin.query.filter_by(email=form.email.data).first()
 		if user and bcrypt.check_password_hash(user.password, form.password.data):
 			login_user(user, remember=form.remember.data)
 			next_page = request.args.get('next')
 			if next_page:
 				return redirect(next_page)
 			else:
-				return redirect(url_for('home'))
+				return redirect(url_for('update'))
 	return render_template('login.html', title='Login', form=form)
 
 @app.route('/logout')
@@ -36,27 +42,10 @@ def logout():
 	logout_user()
 	return redirect(url_for('login'))
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-	if current_user.is_authenticated:
-		return redirect(url_for('home'))
-	form = RegistrationForm()
-	if form.validate_on_submit():
-		hashed_pw = bcrypt.generate_password_hash(form.password.data)
-		user = Users(
-			first_name=form.first_name.data,
-			last_name=form.last_name.data,
-			email=form.email.data, 
-			password=hashed_pw
-			)
-		db.session.add(user)
-		db.session.commit()
-		return redirect(url_for('login'))
-	return render_template('register.html', title='Register', form=form)
 
-@app.route('/post', methods=['GET','POST'])
+@app.route('/logs', methods=['GET','POST'])
 @login_required
-def post():
+def logs():
 	form = PostForm()
 	if form.validate_on_submit():
 		postData = Posts(
@@ -69,20 +58,38 @@ def post():
 		return redirect(url_for('home'))
 	else:
 		print(form.errors)
-	return render_template('post.html', title='Post', form=form)
+	return render_template('logs.html', title='Logs', form=form)
 
-@app.route('/account', methods=['GET','POST'])
+@app.route('/add', methods=['GET','POST'])
 @login_required
-def account():
-	form = UpdateAccountForm()
+def add():
+	search = CountryUpdateForm(request.form)
+	if request.method == 'Post':
+		return search_results(search_results)
+	form = CountryForm()
 	if form.validate_on_submit():
-		current_user.first_name = form.first_name.data
-		current_user.last_name = form.last_name.data
-		current_user.email = form.email.data
+		countryData = country(
+			country=form.country.data,
+			capital=form.capital.data,
+			)
+		continentData = conitnant(
+			continant=form.continant.data
+			)
+		db.session.add(countryData, continentData)
 		db.session.commit()
-		return redirect(url_for('account'))
-	elif request.method == 'GET':
-		form.first_name.data = current_user.first_name
-		form.last_name.data = current_user.last_name
-		form.email.data = current_user.email
-	return render_template('account.html', title='Account', form=form)
+
+@app.route('/update', methods=['GET','POST'])
+@login_required
+def search_results(search):
+    results = []
+    search_string = search.data['search']
+ 
+    if search.data['search'] == '':
+        qry = db_session.query(Country)
+        results = qry.all()
+ 
+    if not results:
+        flash('No results found!')
+        return redirect('/')
+    else:
+		return render_template('update.html', title='Update', form=form)

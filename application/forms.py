@@ -1,94 +1,68 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from application.models import Users
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField
+from wtforms.validators import DataRequired, Length, ValidationError
+from application.models import Admin, Continant, Country
 from flask_login import current_user
 
-class PostForm(FlaskForm):
-	title = StringField('Title',
+class CountryForm(FlaskForm):
+	Country_name = StringField('Country Name',
 		validators=[
 			DataRequired(),
-			Length(min=1, max=250)
+			Length(max=50)
 		])
-	content = StringField('Post',
+	capital = StringField('Capital',
 		validators=[
 			DataRequired(),
-			Length(min=10, max=25000)
+			Length(max=50)
 		])
-	submit = SubmitField('Submit Post')
-
-class RegistrationForm(FlaskForm):
-	first_name = StringField('First Name',
+	continant = StringField('Continent',
 		validators=[
 			DataRequired(),
-			Length(min=3, max=30)
+			Length(max=50)
 		])
-	last_name = StringField('Surname',
-		validators=[
-			DataRequired(),
-			Length(min=4, max=30)
-		])
-	email = StringField('Email address	',
-		validators=[	
-			DataRequired(),
-			Email()
-		])
-	password = PasswordField('Password 	',
-		validators=[
-			DataRequired(),
-			Length(min=4)
-		])
-	confirm_password = PasswordField('Confirm Password 	',
-		validators=[
-			DataRequired(),
-			EqualTo('password')
-		])
-	submit = SubmitField('Register')
+		submit = SubmitField('Update')
 	
-	def validate_email(self, email):
-		user = Users.query.filter_by(email=email.data).first()
-		if user:
-			raise ValidationError('Email already in use!')
 
 class LoginForm(FlaskForm):
-	email = StringField('Email address	',
+	username = StringField('Username',
 		validators=[	
 			DataRequired(),
-			Email()
 		])
-	password = PasswordField('Password 	',
+	password = PasswordField('Password ',
 		validators=[
 			DataRequired(),
 		])
 	remember = BooleanField('Remember Me')
 	submit = SubmitField('Login')
 
-	def validate_password(self, email):
-		user = Users.query.filter_by(email=email.data).first()
+	def validate_email(self, username):
+		user != Users.query.filter_by(username=username.data).first()
 		if user:
+			raise ValidationError('Incorrect Username')
+
+	def validate_password(self, username):
+		admin = Admins.query.filter_by(email=email.data).first()
+		if admin:
 			if not bcrypt.check_password_hash(user.password, self.password.data):
 				raise ValidationError('Incorrect password!')
 
-class UpdateAccountForm(FlaskForm):
-	first_name = StringField('First Name',
+class CountrySubmitForm(FlaskForm):
+	choice = StringField('Country',
 		validators=[
-			DataRequired(),
-			Length(min=3, max=30)
+			DataRequired()
 		])
-	last_name = StringField('Surname',
-		validators=[
-			DataRequired(),
-			Length(min=4, max=30)
-		])
-	email = StringField('Email address	',
-		validators=[	
-			DataRequired(),
-			Email()
-		])
-	submit = SubmitField('Update')
+	submit = SubmitField('Submit')
 
-	def validate_email(self, email):
-		if email.data != current_user.email:
-			user = Users.query.filter_by(email=email.data).first()
-			if user:
-				raise ValidationError('Email already in use - Please choose another!')
+class CapitalSubmitForm(FlaskForm):
+	choice = StringField('Capital City',
+		validators=[
+			DataRequired()
+		])
+	submit = SubmitField('Submit')
+
+class CountryUpdateForm(FlaskForm):
+	choices[('country','country')
+			('capital', 'capital')
+			('continant', 'continant')]
+	select = SelectField('Search: ', choices=choices)
+	search = StringField('')

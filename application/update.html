@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block body_content %}
+<h1>
+	{{ current_user.country }} Page
+</h1>
+<div class="form">
+	<form method="POST" action="">
+		{{ form.hidden_tag() }}
+		<div class='form_group'> 
+			{{ form.country.label }}
+			{{ form.country }}
+			{% if form.country.errors %}
+				<div class='error'>
+					{% for error in form.country.errors %}
+						<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+		<br>
+		<div class='form_group'>
+			{{ form.capital.label }}
+			{{ form.capital }}
+			{% if form.capital.errors %}
+				<div class='error'>
+					{% for error in form.capital.errors %}
+						<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+		<br>
+		<div class='form_group'>
+			{{ form.continant.label }}
+			{{ form.continant }}
+			{% if form.continant.errors %}
+				<div class="error">
+					{% for error in form.continant.errors %}
+						<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+		<br>
+		{{ form.submit }}
+	</form>
+</div>
+{% endblock body_content %}
