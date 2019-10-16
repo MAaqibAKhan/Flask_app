@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 {% block body_content %}
-	<h1>Home Page</h1>
-	{% for post in posts %}
-	<blockquote class="blockquote">
-		<h3>{{ post.title }}</h3>
-		<p>{{ post.content }}</p>
-		<footer class="blockquote-footer">by <i>{{ post.author.first_name }} {{ post.author.last_name }}</i> on the <i>{{ post.date_posted }}</i></footer>
-	</blockquote>
-	{% endfor %}
-	<img src="static/Flag_of_Pakistan.png" alt="Pakistan Flag"class="rounded right" height="100px", width="150px">
+	<br>
+	<h1>Guess the World</h1>
+	<br>
+	<p>Welcome to Guess the World, the world guessing game</p>
+	<br>
+	<div>
+		<p>By the end to then of this you maybe as good as this</p>
+		<center><iframe width="500" height="315" src="https://www.youtube.com/embed/x88Z5txBc7w?autoplay=1"></iframe></center>
+	</div>
 {% endblock body_content %}

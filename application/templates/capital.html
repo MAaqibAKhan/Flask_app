@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block body_content %}
+<br>
+<div class="form">
+	<form method="POST" action="">
+		{{ form.hidden_tag() }}
+		<div class='form_group'>
+			{{ form.choice.label}}
+				{{ form.choice }}
+			{% if form.choice.errors %}
+				<div class='error'>
+					{% for error in form.choice.errors %}
+						<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+			{{ form.submit }}
+			{% if correctAnswer %}
+				<div class="alert alert-success" role="alert">
+					You are correct
+				</div>
+				{% if not correctAnswer %}
+					<div class="alert alert-danger" role="alert">
+						You are wrong
+					</div>
+				{% endif %}			
+			{% else %}
+				<div>
+					Welcome
+				</div>
+			{% endif %}
+		</div>
+	</form>
+</div>
+{% endblock body_content %}

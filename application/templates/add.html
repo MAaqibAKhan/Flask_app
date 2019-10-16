@@ -1,17 +1,27 @@
 {% extends "layout.html" %}
 {% block body_content %}
-<h1>
-	{{ current_user.country }} Page
-</h1>
+<br>
 <div class="form">
 	<form method="POST" action="">
-		{{ form.hidden_tag() }}
+		<br>
 		<div class='form_group'> 
-			{{ form.country.label }}
-			{{ form.country }}
-			{% if form.country.errors %}
+			{{ form.countryID.label }}
+			{{ form.countryID }}
+			{% if form.countryID.errors %}
 				<div class='error'>
-					{% for error in form.country.errors %}
+					{% for error in form.countryID.errors %}
+						<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+		<br>
+		<div class='form_group'> 
+			{{ form.countryName.label }}
+			{{ form.countryName }}
+			{% if form.countryName.errors %}
+				<div class='error'>
+					{% for error in form.countryName.errors %}
 						<span>{{ error }}</span>
 					{% endfor %}
 				</div>
@@ -30,18 +40,30 @@
 			{% endif %}
 		</div>
 		<br>
-		<div class='form_group'>
-			{{ form.continant.label }}
-			{{ form.continant }}
-			{% if form.continant.errors %}
-				<div class="error">
-					{% for error in form.continant.errors %}
+		<div class='form_group'> 
+			{{ form.continantID.label }}
+			{{ form.continantID }}
+			{% if form.continantID.errors %}
+				<div class='error'>
+					{% for error in form.continantID.errors %}
 						<span>{{ error }}</span>
 					{% endfor %}
 				</div>
 			{% endif %}
 		</div>
 		<br>
+		<div class='form_group'> 
+			{{ form.continant.label }}
+			{{ form.continant }}
+			{% if form.continant.errors %}
+				<div class='error'>
+					{% for error in form.continant.errors %}
+						<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+		<br>		
 		{{ form.submit }}
 	</form>
 </div>

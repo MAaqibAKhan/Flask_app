@@ -1,17 +1,27 @@
 {% extends "layout.html" %}
 {% block body_content %}
-<h1>
-	{{ current_user.first_name }} {{ current_user.last_name }} Account Page
-</h1>
+<br>
 <div class="form">
 	<form method="POST" action="">
 		{{ form.hidden_tag() }}
 		<div class='form_group'> 
-			{{ form.first_name.label }}
-			{{ form.first_name }}
-			{% if form.first_name.errors %}
+			{{ form.countryID.label }}
+			{{ form.countryID }}
+			{% if form.countryID.errors %}
 				<div class='error'>
-					{% for error in form.first_name.errors %}
+					{% for error in form.countryID.errors %}
+						<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+		<br>
+		<div class='form_group'> 
+			{{ form.countryName.label }}
+			{{ form.countryName }}
+			{% if form.countryName.errors %}
+				<div class='error'>
+					{% for error in form.countryName.errors %}
 						<span>{{ error }}</span>
 					{% endfor %}
 				</div>
@@ -19,30 +29,20 @@
 		</div>
 		<br>
 		<div class='form_group'>
-			{{ form.last_name.label }}
-			{{ form.last_name }}
-			{% if form.last_name.errors %}
+			{{ form.capital.label }}
+			{{ form.capital }}
+			{% if form.capital.errors %}
 				<div class='error'>
-					{% for error in form.last_name.errors %}
+					{% for error in form.capital.errors %}
 						<span>{{ error }}</span>
 					{% endfor %}
 				</div>
 			{% endif %}
 		</div>
-		<br>
-		<div class='form_group'>
-			{{ form.email.label }}
-			{{ form.email }}
-			{% if form.email.errors %}
-				<div class="error">
-					{% for error in form.email.errors %}
-						<span>{{ error }}</span>
-					{% endfor %}
-				</div>
-			{% endif %}
-		</div>
+
 		<br>
 		{{ form.submit }}
+		{{ form.delete }}
 	</form>
 </div>
 {% endblock body_content %}

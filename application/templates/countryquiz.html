@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block body_content %}
+<br>
+<div class="form">
+	<form method="POST" action="/countryquiz">
+		{{ form.hidden_tag() }}
+		<div class='form_group'>
+			{{ form.choice.label}}
+				{{ form.choice }}
+			{% if form.choice.errors %}
+				<div class='error'>
+					{% for error in form.choice.errors %}
+						<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+			{{ form.submit }}
+			{% if correctAnswer %}
+				<div class="alert alert-success" role="alert">
+					<p>You are correct</p>
+				</div>
+			{% else %}
+				<div class="alert alert-danger" role="alert">
+					<p>You are wrong</p>
+				</div>
+			{% endif %}
+		</div>
+	</form>
+</div>
+{% endblock body_content %}
