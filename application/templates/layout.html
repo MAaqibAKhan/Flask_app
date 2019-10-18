@@ -16,6 +16,15 @@
 		padding-left: 30px;
 		font-family: monospace;
 	}
+	.footer{
+		display:block;
+		background-color: #086363;
+		text-align: center;
+		font-size: 12px;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+	}
 </style>
 
 <body class="body">
@@ -24,10 +33,6 @@
 			<img src="static/earth.jpg" alt="Earth"class="rounded right" height="30", width="30", class="d-inline-block align-top", alt="">
 			GTW
 		</a>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
-
 		<div class= "collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav">
 				{% if current_user.is_authenticated %}
@@ -38,7 +43,7 @@
 				{% else %}
 					<a class="nav-link" href="{{ url_for('countryquiz') }}">Country Quiz</a>
 					<a class="nav-link" href="{{ url_for('capital') }}">Capital Quiz</a>
-					<a class="nav-link" href="{{ url_for('login') }}">Login</a>
+					<a style= "text-align: right; "class="nav-link" href="{{ url_for('login') }}">Login</a>
 				{% endif %}
 			</ul>
 		</div>
@@ -47,4 +52,9 @@
 		{% block body_content %}{% endblock %}
 	</div>
 </body>
+<div  class="footer">	
+	<footer>
+		<span>I'm sorry JetPunk for stealing your quiz</span>
+	</footer>
+</div>
 </html>

@@ -4,8 +4,11 @@ from application.models import Admin, Country, Continant
 from application.forms import CountryForm, LoginForm, CountrySubmitForm, CapitalSubmitForm, SearchForm, CountryUpdateForm
 from flask_login import login_user, current_user, logout_user, login_required
 
+count = 0 
 searchTerm = []
 newTerm = []
+countryAnswers = []
+capitalAnswers = []
 
 @app.route('/')
 @app.route('/home')
@@ -14,6 +17,7 @@ def home():
 
 @app.route('/countryquiz', methods=['GET', 'POST'])
 def countryquiz():
+	global count 
 	correctAnswer= False
 	answerArray = []
 	form=CountrySubmitForm()
@@ -21,21 +25,27 @@ def countryquiz():
 		quizData = Country.query.filter_by(countryName=form.choice.data).first()
 		answerArray.append([str(quizData)])
 		answerTerm = answerArray[0][0].split(", ")
-		answer = answerTerm[1]
-		#answerArray = eval("[",str[quizData],"]")
-		#answer = answerArray[1]
-		print(answer)
-		if answer == form.choice.data:
+		if len(answerTerm) > 1:
 			correctAnswer= True
-		if answer != form.choice.data:
-			print("False")
+			if answerTerm[1] in countryAnswers:
+				correctAnswer=False
+			countryAnswers.append(answerTerm[1])
+			print(countryAnswers)
+		else:
+			correctAnswer=False
 	else:
 		print(form.errors)
 		redirect(url_for('login'))
-	return render_template('countryquiz.html', title='Country Quiz', form=form, correctAnswer=correctAnswer)
+	#while count >= 0:
+	if correctAnswer == True:
+		count += 1
+	else:
+		count = 0
+	return render_template('countryquiz.html', title='Country Quiz', form=form, correctAnswer=correctAnswer, count=count)
 
 @app.route('/capital', methods=['GET', 'POST'])
 def capital():
+	global count
 	answerArray =[]
 	correctAnswer= False
 	form=CapitalSubmitForm()
@@ -43,10 +53,18 @@ def capital():
 		quizData = Country.query.filter_by(capital=form.choice.data).first()
 		answerArray.append([str(quizData)])
 		answerTerm = answerArray[0][0].split(", ")
-		answer = answerTerm[2]
-		if answer == form.choice.data:
-			correctAnswer = True
-	return render_template('capital.html', title='Capital Quiz', form=form, correctAnswer=correctAnswer)
+		if len(answerTerm) > 1:
+			correctAnswer= True
+			if answerTerm[2] in capitalAnswers:
+				correctAnswer=False
+			capitalAnswers.append(answerTerm[1])
+		else:
+			correctAnswer=False
+	if correctAnswer == True:
+		count += 1
+	else:
+		count = 0	
+	return render_template('capital.html', title='Capital Quiz', form=form, correctAnswer=correctAnswer, count=count)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -94,20 +112,17 @@ def search():
 	if request.method == 'POST':
 		#if search.validate_on_submit():
 		searchData = Country.query.filter_by(countryName=search.search.data)
+		print("------SEARCHDATA")
 		print(searchData.first())
+		print("------")
 		print([str(searchData.first())][0][0:5])
 		if searchData:
-			#for column in searchData:
-#			searchTerm = searchData.split(",")
-			searchTerm.append([str(searchData.first())]) #Country.countryName.data
-			print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS", searchTerm[0])
+			global searchTerm
+			searchTerm.append(str(searchData.first())) #Country.countryName.data
+			print("--searchTerm-post-search--")
+			print(searchTerm)
+			print("---")
 			return redirect(url_for('details'))
-		else:
-			return redirect(url_for('home'))
-#	else:
-#		searchTerm = ""
-#		return redirect(url_for('details'))
-
 	else:
 		return render_template('search.html', title='Search', search=search, form=form)
 
@@ -115,46 +130,50 @@ def search():
 @login_required
 def details():
 	global newTerm
+	global searchTerm
 	form = CountryUpdateForm()
-	if searchTerm:	
-		newTerm = searchTerm[0][0].split(",")
-		searchData = Country.query.filter_by(countryName=newTerm[1].strip()).first()
-		if form.validate_on_submit():
-			if form.delete.data:
-				db.session.delete(searchData)
-				db.session.commit()
-				return redirect(url_for('search'))
-			else:
-				newTerm[0] = form.countryID.data
-				newTerm[1] = form.countryName.data
-				newTerm[2] = form.capital.data
-				searchData.countryID = form.countryID.data
-				searchData.countryName = form.countryName.data
-				searchData.capital = form.capital.data
-				db.session.commit()
-				return redirect (url_for('details'))
-		elif request.method =='GET':
-			form.countryID.data = searchData.countryID
-			form.countryName.data = searchData.countryName
-			form.capital.data = searchData.capital
-				
-		return render_template('details.html', title='Details', form=form)
-	return render_template('details.html', title='Details', form=form)
+	if searchTerm:
+		newTerm = searchTerm[0].split(",")
+		print("-nt-")
+		print(newTerm)
+		print("-nt-")
+		if len(newTerm) > 1:
+			searchData = Country.query.filter_by(countryName=newTerm[1].strip()).first()
+			print("helloooooooooooooo??????")
+			if form.validate_on_submit():
+				print("helloooooooooooooo")
+				print("helloooooooooooooo")
+				print("helloooooooooooooo")
+				print("helloooooooooooooo")
+				print("helloooooooooooooo")
+				print("helloooooooooooooo")
+				searchTerm = []
+				if form.delete.data:
+					db.session.delete(searchData)
+					db.session.commit()
+					return redirect(url_for('search'))
+				else:
+					print("heeeellllloooooo")
+					newTerm[0] = form.countryID.data
+					newTerm[1] = form.countryName.data
+					newTerm[2] = form.capital.data
+					searchData.countryID = form.countryID.data
+					searchData.countryName = form.countryName.data
+					searchData.capital = form.capital.data
+					db.session.commit()
+					return redirect (url_for('search'))
+			elif request.method =='GET':
+				form.countryID.data = searchData.countryID
+				form.countryName.data = searchData.countryName
+				form.capital.data = searchData.capital
 
+	
+			return render_template('details.html', title='Details', form=form)
+		else:
+			return redirect(url_for('search'))
+	return render_template('details.html', title='Details', form=form)
 
 @app.route('/logs', methods=['GET','POST'])
 @login_required
 def logs():
-	form = PostForm()
-	if form.validate_on_submit():
-		postData = Posts(
-			title=form.title.data,
-			content=form.content.data,
-			author=current_user
-			)
-		db.session.add(postData)
-		db.session.commit()
-		return redirect(url_for('home'))
-	else:
-		print(form.errors)
-	return render_template('logs.html', title='Logs', form=form)
+	return render_template('logs.html', title='Logs')

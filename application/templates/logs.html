@@ -1,29 +1,8 @@
 {% extends "layout.html" %}
 {% block body_content %}
-<div class="form">
-	<form method="POST" action="">
-		{{ form.hidden_tag() }}
-		{{ form.title.label }}
-		{{ form.title }}
-		{% if form.title.errors %}
-			<div>
-				{% for error in form.title.errors %}
-					<span>{{ error }}</span>
-				{% endfor %}
-			</div>
-		{% endif %}
-		<br>
-		{{ form.content.label }}
-		{{ form.content }}
-		{% if form.content.errors %}
-			<div>
-				{% for error in form.content.errors %}
-					<span>{{ error }}</span>
-				{% endfor %}
-			</div>
-		{% endif %}
-		<br>
-		{{ form.submit }}
-	</form>
+<div>
+	<h1>LOGS</h1>
+	<img src="static/logs.jpg" alt="logs"class="rounded right" height="1000", width="1300">
+	<br>
 </div>
 {% endblock body_content %}

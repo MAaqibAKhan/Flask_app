@@ -1,23 +1,29 @@
 {% extends "layout.html" %}
 {% block body_content %}
 <h1>
-	Update Page
+	Welcome Admin 
 </h1>
-<div class="form">
-	<form method="POST" action="">
-		{{ form.hidden_tag() }}
-		<div class='form_group'>
-			{{ search.search.label}}
-			{{ search.search }}
-			{% if search.search.errors %}
-				<div class='error'>
-					{% for error in search.search.errors %}
-						<span>{{ error }}</span>
-					{% endfor %}
-				</div>
-			{% endif %}
-			{{search.submit}}
-		</div>
-	</form>
-</div>
+<p>
+	If you would like to edit a country's details, then enter it in the search bar below, for anything else look in the Navbar above. 
+</p>
+<br>
+<center>
+	<div class="form">
+		<form method="POST" action="">
+			{{ form.hidden_tag() }}
+			<div class='form_group'>
+				<b>{{ search.search.label}}</b>
+				{{ search.search }}
+				{% if search.search.errors %}
+					<div class='error'>
+						{% for error in search.search.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
+				{{search.submit}}
+			</div>
+		</form>
+	</div>
+</center>
 {% endblock %}

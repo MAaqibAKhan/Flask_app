@@ -14,21 +14,9 @@
 					{% endfor %}
 				</div>
 			{% endif %}
-			{{ form.submit }}
-			{% if correctAnswer %}
-				<div class="alert alert-success" role="alert">
-					You are correct
-				</div>
-				{% if not correctAnswer %}
-					<div class="alert alert-danger" role="alert">
-						You are wrong
-					</div>
-				{% endif %}			
-			{% else %}
-				<div>
-					Welcome
-				</div>
-			{% endif %}
+				{{ count }} pts
+			<br>
+			{{ form.submit }}	
 		</div>
 	</form>
 </div>
