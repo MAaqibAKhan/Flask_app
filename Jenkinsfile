@@ -8,7 +8,7 @@ pipeline{
                 }
                 stage('---clean---'){
                         steps{
-                              sh label: '', script: '''if [ ! "$(sudo docker ps -qa -f name=flask-app)" ]; then
+                              sh label: '', script: '''if [ "$(sudo docker ps -qa -f name=flask-app)" ]; then
      			 		# cleanup
         				sudo docker rm -f flask-app
     				fi'''
