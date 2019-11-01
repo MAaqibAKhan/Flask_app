@@ -9,7 +9,8 @@ This application was run using an Ubuntu instance on GCP, it uses Python as its 
 1. Have Python3 installed on your machine
 2. Make sure your apt-get is up to date
 3. Install pip3 by using: **sudo apt-get install python3-pip**
-4. Clone this repository to your machine
+4. Have Jenkins already installed (only for Jenkins pipeline upload)
+5. Clone this repository to your machine
 
 ## Running the app
 ### Local Machine
@@ -25,14 +26,18 @@ This application was run using an Ubuntu instance on GCP, it uses Python as its 
 3. Use **docker build -t flask-app .** to build the docker image
 4. Use **docker run -d -p 5000:5000 flask-app**
 
-### Making sure jenkins can run it
-1. Add a new user called pythonadm using 
+### Jenkins pipeline
+1. In your Vm add a new user called pythonadm using,
     **sudo useradd -m -s /bin/bash pythonadm**
-2. Check whether jenkins and pythonadm have access to the document by using
+2. Check whether jenkins and pythonadm have access to the document by using,
     **sudo visudo**
 3. If not input:
 ```
 jenkins  ALL=(ALL:ALL) NOPASSWD:ALL
 pythonadm  ALL=(ALL:ALL) NOPASSWD:ALL
 ```
+4. In Jenkins create a new pipeline task.
+5. In the pipeline definition switch it to *Pipeline script from SCM* and select the SCM as git.
+6. In the repository URL enter this repository URL and then select save.
+7. Now press build now and the app should start to set up.
 #### Congratulations you have now got a working version of the Web-app
