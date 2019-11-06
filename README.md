@@ -14,8 +14,8 @@ This application was run using an Ubuntu instance on GCP, it uses Python as its 
 6. tick the tcp checkbox and enter **5000** in the box next to it
 
 ## Prerequisite
-1. Have Python3 installed on your machine
-2. Make sure your apt-get is up to date
+1. Have Python3 installed on your machine by using **sudo apt-get install python**
+2. Make sure your apt-get is up to date by inputing **sudo apt-get update**
 3. Install pip3 by using: **sudo apt-get install python3-pip**
 4. Have Jenkins already installed (only for Jenkins pipeline upload)
 5. Clone this repository to your machine
