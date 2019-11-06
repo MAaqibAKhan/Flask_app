@@ -5,6 +5,14 @@ This help sheet will show you the many ways in which you can upload the applicat
 ### Tools used
 This application was run using an Ubuntu instance on GCP, it uses Python as its main scripting language, specifically the Flask web-framework which uses normal HTML and CSS along with JINJA2 syntax to impliment the pythonic logic that was created in the python files 
 
+## GCP Firewall Rules
+1. Click the 3 dots on the side of your VM and on the drop down go to Network details
+2. Then on the side menu click **Firewall Rules**
+3. Now you should click **Create new firewall rule**
+4. Change the Targets to **All instances on the Network**
+5. Input **0.0.0.0/0** in the source IP range
+6. tick the tcp checkbox and enter **5000** in the box next to it
+
 ## Prerequisite
 1. Have Python3 installed on your machine
 2. Make sure your apt-get is up to date
